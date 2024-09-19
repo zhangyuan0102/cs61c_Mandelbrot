@@ -8,7 +8,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct ComplexNumber ComplexNumber;
+typedef struct ComplexNumber {
+    double real;
+    double imaginary;
+} ComplexNumber;
 
 //Returns a pointer to a new Complex Number with the given real and imaginary components
 extern ComplexNumber* newComplexNumber(double real_component, double imaginary_component);

@@ -10,54 +10,58 @@
 #include <math.h>
 
 
-typedef struct ComplexNumber
-{
-	double real;
-	double imaginary;
-}ComplexNumber;
+
 
 //Returns a pointer to a new Complex Number with the given real and imaginary components
-ComplexNumber* newComplexNumber(double real_component, double imaginary_component)
-{
-    //YOUR CODE HERE
-	return NULL;
+ComplexNumber* newComplexNumber(double real_component, double imaginary_component){
+    ComplexNumber* c = (ComplexNumber*)malloc(sizeof(ComplexNumber));
+    if (c == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);  // Exit if memory allocation fails
+    }
+    c->real = real_component;
+    c->imaginary = imaginary_component;
+    return c;
 }
 
 //Returns a pointer to a new Complex Number equal to a*b
-ComplexNumber* ComplexProduct(ComplexNumber* a, ComplexNumber* b)
-{
-    //YOUR CODE HERE
-	return NULL;
+ComplexNumber* ComplexProduct(ComplexNumber* a, ComplexNumber* b){
+    ComplexNumber* product = (ComplexNumber*)malloc(sizeof(ComplexNumber));
+    if (product == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);  // Exit if memory allocation fails
+    }
+    product->real = (a->real * b->real) - (a->imaginary * b->imaginary);
+    product->imaginary = (a->real * b->imaginary) + (a->imaginary * b->real);
+    return product;
 }
 
 //Returns a pointer to a new Complex Number equal to a+b
-ComplexNumber* ComplexSum(ComplexNumber* a, ComplexNumber* b)
-{
-    //YOUR CODE HERE
-	return NULL;
+ComplexNumber* ComplexSum(ComplexNumber* a, ComplexNumber* b){
+    ComplexNumber* sum = (ComplexNumber*)malloc(sizeof(ComplexNumber));
+    if (sum == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);  // Exit if memory allocation fails
+    }
+    sum->real = a->real + b->real;
+    sum->imaginary = a->imaginary + b->imaginary;
+    return sum;
 }
 
 //Returns the absolute value of Complex Number a
-double ComplexAbs(ComplexNumber* a)
-{
-    //YOUR CODE HERE
-	return 0;
+double ComplexAbs(ComplexNumber* a){
+    return sqrt((a->real * a->real) + (a->imaginary * a->imaginary));
 }
 
-void freeComplexNumber(ComplexNumber* a)
-{
-	//YOUR CODE HERE
+void freeComplexNumber(ComplexNumber* a){
+    free(a);
 }
 
-double Re(ComplexNumber* a)
-{
-	//YOUR CODE HERE
-	return 0;
+double Re(ComplexNumber* a){
+    return a->real;
 }
-double Im(ComplexNumber* a)
-{
-	//YOUR CODE HERE
-	return 0;
+double Im(ComplexNumber* a){
+    return a->imaginary;
 }
 
 

@@ -17,16 +17,79 @@ void usage(char* argv[])
 }
 
 //Creates a color palette image for the given colorfile in outputfile. Width and heightpercolor dictates the dimensions of each color. Output should be in P3 format
-int P3colorpalette(char* colorfile, int width, int heightpercolor, char* outputfile)
-{
-	//YOUR CODE HERE
+int P3colorpalette(char* colorfile, int width, int heightpercolor, char* outputfile){
+	if (width < 1 || heightpercolor < 1) {
+		return 1;
+	}
+
+	FILE *outfile = fopen(outputfile, "w");
+	if (outfile == NULL) {
+		return 1;
+	}
+
+	uint8_t **colormap;
+	int *colorcount = (int*) malloc(sizeof(int));
+	colormap = FileToColorMap(colorfile, colorcount);
+	if (colormap == NULL) {
+		free(colorcount);
+		return 1;
+	}
+
+	fprintf(outfile, "P3 %d %d 255\n", width, *(colorcount)*heightpercolor);
+	for (int i = 0; i < *(colorcount); i++) {
+		uint8_t *linecolor = *(colormap + i);
+		for (int j = 0; j < heightpercolor; j++) {
+			for (int k = 0; k < width - 1; k++) {
+				fprintf(outfile, "%hhu %hhu %hhu ", *linecolor, *(linecolor + 1), *(linecolor + 2));
+			}
+			fprintf(outfile, "%hhu %hhu %hhu\n", *(linecolor), *(linecolor + 1), *(linecolor + 2));
+		}
+	}
+	fclose(outfile);
+	for(int i = 0; i < *(colorcount); i++) {
+		free(*(colormap + i));
+	}
+	free(colormap);
+	free(colorcount);
+
 	return 0;
 }
 
 //Same as above, but with P6 format
-int P6colorpalette(char* colorfile, int width, int heightpercolor, char* outputfile)
-{
-	//YOUR CODE HERE
+int P6colorpalette(char* colorfile, int width, int heightpercolor, char* outputfile){
+	if (width < 1 || heightpercolor < 1) {
+		return 1;
+	}
+
+	FILE *outfile = fopen(outputfile, "w");
+	if (outfile == NULL) {
+		return 1;
+	}
+
+	uint8_t **colormap;
+	int *colorcount = (int*) malloc(sizeof(int));
+	colormap = FileToColorMap(colorfile, colorcount);
+	if (colormap == NULL) {
+		free(colorcount);
+		return 1;
+	}
+
+	fprintf(outfile, "P6 %d %d 255\n", width, *(colorcount)*heightpercolor);
+	for (int i = 0; i < *(colorcount); i++) {
+		uint8_t *linecolor = *(colormap + i);
+		for (int j = 0; j < heightpercolor; j++) {
+			for (int k = 0; k < width; k++) {
+				fwrite(linecolor, 1, 3, outfile);
+			}
+		}
+	}
+
+	fclose(outfile);
+	for(int i = 0; i < *(colorcount); i++) {
+		free(*(colormap + i));
+	}
+	free(colormap);
+	free(colorcount);
 	return 0;
 }
 
